@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Transaction History:</h1>
+    <table style="width:500px, text-align:left, padding:15px">
+        <tr style="background-color:grey">
+            <th>To</th>
+            <th>From</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+        <tr style="background-color:light-grey">
+            <td>Sender</td>
+            <td>Reciever</td>
+            <td>Money</td>
+            <td>At Some Point</td>
+        </tr>
+    </table>
+    <br>
+    <form action="overview.htm" method="post">
+        <input type="submit" value="Back to Account Overview">
+    </form>
+    <br>
+    <form action="login.htm" method="post">
+        <input type="submit" value="Log Out">
+    </form>
+</body>
+</html>
+
+<!--- todo:
+transactions should probably go to user's perferred account, so other users
+    can't snoop on someone else's bank accounts
+login checker
+will probably be a JS table, to easily sort by field attributes
+change account button, to see history of another bank account
+--->
