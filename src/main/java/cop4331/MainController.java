@@ -58,4 +58,10 @@ public class MainController {
     public @ResponseBody Iterable<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
+
+    @GetMapping(path="/historee")
+    public @ResponseBody String submitSentence ( @RequestParam(value = "sentence", defaultValue = "Hello from Java!") String sentence) {
+        TestHTTP n = new TestHTTP(sentence);
+        return n.getSentence();
+    }
 }
