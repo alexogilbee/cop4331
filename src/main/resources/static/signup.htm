@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html>
-<body>
-    <h1>Sign Up:</h1>
-    <form name="signup" action="login.htm" onsubmit="return validateForm()" method="post"> <!--- add method="POST" --->
-        <label for="uname">Username:</label><br>
-        <input type="text" id="uname" name="uname" required><br>
-        <label for="fname">First Name:</label><br>
-        <input type="text" id="fname" name="fname" required><br>
-        <label for="lname">Last Name:</label><br>
-        <input type="text" id="lname" name="lname" required><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br>
-        <label for="confirm">Confirm Password:</label><br>
-        <input type="password" id="confirm" name="confirm" required><br><br>
-        <input type="submit" value="Sign Up">
-    </form>
+    <body>
+        <h1>Sign Up:</h1>
+        <form name="signup" action="login.htm" onsubmit="return validateForm()" method="post"> <!--- add method="POST" --->
+            <label for="uname">Username:</label><br>
+            <input type="text" id="uname" name="uname" required><br>
+            <label for="fname">First Name:</label><br>
+            <input type="text" id="fname" name="fname" required><br>
+            <label for="lname">Last Name:</label><br>
+            <input type="text" id="lname" name="lname" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <label for="confirm">Confirm Password:</label><br>
+            <input type="password" id="confirm" name="confirm" required><br><br>
+            <input type="submit" value="Sign Up">
+        </form>
 
-    <p>Already have an account? <a href="login.htm">Login</a></p>
+        <p>Already have an account? <a href="login.htm">Login</a></p>
 
-    <script>
-        function validateForm() {
-            // check if uname is taken
-            // check if passwords match
-            if (signup.password.value != signup.confirm.value) {
-                alert('Error: Passwords must match.');
-                return false;
+        <script>
+            function validateForm() {
+                // check if uname is taken
+                // check if passwords match
+                if (signup.password.value != signup.confirm.value) {
+                    alert('Error: Passwords must match.');
+                    return false;
+                }
+                // password restrictions?
             }
-            // password restrictions?
-        }
-    </script>
-</body>
+        </script>
+    </body>
 </html>
 
 <!---todos:

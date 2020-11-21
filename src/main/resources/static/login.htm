@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html>
-<body>
-    <h1>Log In:</h1>
-    <form action="overview.htm"> <!--- add post --->
-        <label for="uname">Username:</label><br>
-        <input type="text" id="uname" name="uname"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-        <input type="submit" value="Log In">
-    </form>
+    <body onload="request()">
+        <h1>Log In:</h1>
+        <form action="overview.htm"> <!--- add post --->
+            <label for="uname">Username:</label><br>
+            <input type="text" id="uname" name="uname"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br><br>
+            <input type="submit" value="Log In">
+        </form>
 
-    <p>Sign Up schenannigans go <a href="signup.htm">Here.</a></p>
-</body>
+        <p id="output">aa</p>
+
+        <p id="signup">Sign Up schenannigans go <a href="signup.htm">Here.</a></p>
+
+        <script>
+            function request() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        alert(this.responseText);
+                        document.getElementById("output").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("GET", "/controller/test", true);
+                xhttp.send();
+            }
+        </script>
+    </body>
 </html>
 
 <!--- todos:

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 //@RequestMapping(path="/demo")
-@RequestMapping(path="/")
+@RequestMapping(path="/controller")
 public class MainController {
     @Autowired
     @Qualifier(value = "userRepository")
@@ -59,7 +59,7 @@ public class MainController {
         return transactionRepository.findAll();
     }
 
-    @GetMapping(path="/historee")
+    @GetMapping(path="/test")
     public @ResponseBody String submitSentence ( @RequestParam(value = "sentence", defaultValue = "Hello from Java!") String sentence) {
         TestHTTP n = new TestHTTP(sentence);
         return n.getSentence();
