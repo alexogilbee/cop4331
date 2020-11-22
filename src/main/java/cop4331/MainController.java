@@ -24,6 +24,10 @@ public class MainController {
     @Qualifier(value = "transactionRepository")
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    @Qualifier(value = "accountRepository")
+    private AccountRepository accountRepository;
+
 //    @PostMapping(path="/add") questionable
     @PostMapping(path="/add")
     public @ResponseBody String addNewUser (@RequestParam String uName,
@@ -37,7 +41,25 @@ public class MainController {
         List<User> l = userRepository.findByuName(uName);
         if (l.isEmpty()) {
             userRepository.save(n);
+
+            List<User> l2 = userRepository.findByuName(uName);
+            User n2 = l2.get(0);    // holds uID
+
+            Account c = new Account();
+            c.setUID(n2.getUID());
+            c.setAName("Checking");
+            c.setIsSavings(false);
+            c.setBalance(0.00);
+            accountRepository.save(c);
+            
+            Account s = new Account();
+            s.setUID(n2.getUID());
+            s.setAName("Savings");
+            s.setIsSavings(true);
+            s.setBalance(0.00);
+            accountRepository.save(s);
             return "Saved\n";
+            // also add checking and savings accounts
         }
         return "Duplicate";
     }

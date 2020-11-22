@@ -27,7 +27,7 @@
                             xhttp2.onreadystatechange = function() {
                                 if (this.readyState == 4 && this.status == 200) {
                                     // redirect to login
-                                    window.location = "login.htm";
+                                    window.location.replace("login.htm");
                                 }
                             };
                             xhttp.open("POST", "/controller/add", false);

@@ -1,8 +1,27 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <script>
+            function validate() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        alert(this.responseText);
+                        document.getElementById("output").innerHTML = this.responseText;
+                        // send a POST
+                        // check if the username is valid, then if the password matches
+                        // if return true then allow login
+                        // else return false
+                    }
+                };
+                xhttp.open("GET", "/controller/test", false);
+                xhttp.send();
+            }
+        </script>
+    </head>
     <body onload="request()">
         <h1>Log In:</h1>
-        <form action="overview.htm"> <!--- add post --->
+        <form action="overview.htm" onsubmit="validate()"> <!--- add post --->
             <label for="uname">Username:</label><br>
             <input type="text" id="uname" name="uname"><br>
             <label for="password">Password:</label><br>
@@ -10,23 +29,7 @@
             <input type="submit" value="Log In">
         </form>
 
-        <p id="output">aa</p>
-
         <p id="signup">New User? <a href="signup.htm">Sign Up</a></p>
-
-        <script>
-            function request() {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        alert(this.responseText);
-                        document.getElementById("output").innerHTML = this.responseText;
-                    }
-                };
-                xhttp.open("GET", "/controller/test", true);
-                xhttp.send();
-            }
-        </script>
     </body>
 </html>
 
