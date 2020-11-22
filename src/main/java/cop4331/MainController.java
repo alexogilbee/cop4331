@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 //@RequestMapping(path="/demo")
@@ -31,8 +34,12 @@ public class MainController {
         n.setFName(fName);
         n.setLName(lName);
         n.setPWord(pWord);
-        userRepository.save(n);
-        return "Saved\n";
+        List<User> l = userRepository.findByuName(uName);
+        if (l.isEmpty()) {
+            userRepository.save(n);
+            return "Saved\n";
+        }
+        return "Duplicate";
     }
 
     // questionable
@@ -66,5 +73,14 @@ public class MainController {
     @GetMapping(path="/history")
     public @ResponseBody Iterable<Transaction> getTransactionHistory() {
         return transactionRepository.findAll();
+    }
+
+    @PostMapping(path="/taken")
+    public @ResponseBody boolean isuNameTaken ( @RequestParam String uName) {
+        List<User> l = userRepository.findByuName(uName);
+        if (l.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 }

@@ -1,8 +1,51 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <script>
+            function validateForm() {
+                // check if passwords match
+                if (signup.password.value != signup.confirm.value) {
+                    alert('Error: Passwords must match.');
+                    return false;
+                }
+                // check if uname is taken
+                var txt = "uName=" + signup.uname.value;
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // read response
+                        if (this.responseText == 'true') {
+                            alert('Error: Username is Already Taken.');
+                            return false;
+                        } else {
+                            // if it passes both, make a new user
+                            // JSONify the form (dont think you need JSON but its better practice to?)
+                            // Stringify the JSON
+                            // Send to server to be added
+                            var user = "uName=" + signup.uname.value + "&fName=" + signup.fname.value + "&lName=" + signup.lname.value + "&pWord=" + signup.password.value;
+                            var xhttp2 = new XMLHttpRequest();
+                            xhttp2.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    // redirect to login
+                                    window.location = "login.htm";
+                                }
+                            };
+                            xhttp.open("POST", "/controller/add", false);
+                            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            xhttp.send(user);
+                            // if return succes then redirect to login page
+                        }
+                    } // can probably get error messages here?
+                };
+                xhttp.open("POST", "/controller/taken", false);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send(txt);
+            }
+        </script>
+    </head>
     <body>
         <h1>Sign Up:</h1>
-        <form name="signup" action="login.htm" onsubmit="return validateForm()" method="post"> <!--- add method="POST" --->
+        <form name="signup" action="signup.htm" onsubmit="return validateForm()"> <!--- add method="POST" --->
             <label for="uname">Username:</label><br>
             <input type="text" id="uname" name="uname" required><br>
             <label for="fname">First Name:</label><br>
@@ -17,18 +60,6 @@
         </form>
 
         <p>Already have an account? <a href="login.htm">Login</a></p>
-
-        <script>
-            function validateForm() {
-                // check if uname is taken
-                // check if passwords match
-                if (signup.password.value != signup.confirm.value) {
-                    alert('Error: Passwords must match.');
-                    return false;
-                }
-                // password restrictions?
-            }
-        </script>
     </body>
 </html>
 
