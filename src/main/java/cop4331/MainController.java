@@ -21,7 +21,7 @@ public class MainController {
     @Qualifier(value = "transactionRepository")
     private TransactionRepository transactionRepository;
 
-//    @PostMapping(path="/add")
+//    @PostMapping(path="/add") questionable
     @PostMapping(path="/add")
     public @ResponseBody String addNewUser (@RequestParam String uName,
         @RequestParam String fName, @RequestParam String lName, @RequestParam String pWord) {
@@ -35,11 +35,13 @@ public class MainController {
         return "Saved\n";
     }
 
+    // questionable
     @GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    // questionable
     @PostMapping(path="/tsxn")
     public @ResponseBody String addTransaction ( @RequestParam Integer sID, @RequestParam Integer rID,
         @RequestParam Double amount, @RequestParam String date, @RequestParam String memo) {
@@ -54,14 +56,15 @@ public class MainController {
         return "Saved\n";
     }
 
-    @GetMapping(path="/tsxnall")
-    public @ResponseBody Iterable<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
-    }
-
+    // questionable
     @GetMapping(path="/test")
     public @ResponseBody String submitSentence ( @RequestParam(value = "sentence", defaultValue = "Hello from Java!") String sentence) {
         TestHTTP n = new TestHTTP(sentence);
         return n.getSentence();
+    }
+
+    @GetMapping(path="/history")
+    public @ResponseBody Iterable<Transaction> getTransactionHistory() {
+        return transactionRepository.findAll();
     }
 }

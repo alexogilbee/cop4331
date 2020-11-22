@@ -2,7 +2,7 @@
 <html>
     <head>
     </head>
-    <body>
+    <body onload=request()>
         <h1>Transaction History:</h1>
         <div id="table">
             <table>
@@ -22,9 +22,6 @@
                 </tr>
             </table>
             <br>
-            <p class="uname">The Username is </p>
-            <p class="fname">The First Name is </p>
-            <p class="lname">The Last Name is </p>
             <button type="button" onclick="loadText()">Change Content</button>
         </div>
         
@@ -32,6 +29,30 @@
         <button onclick="document.location='overview.htm'">Back to Account Overview</button>
         <br>
         <button onclick="document.location='login.htm'">Log Out</button>
+
+        <script>
+            function request() {
+                var myObj, txt = "";
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        myObj = JSON.parse(this.responseText);
+                        txt += "<table border='1'><th>Sender</th><th>Reciever</th><th>Amount</th><th>Date</th><th>Memo</th>"
+                        for (x in myObj) {
+                            txt += "<tr><td>" + myObj[x].sid + "</td>";
+                            txt += "<td>" + myObj[x].rid + "</td>";
+                            txt += "<td>" + myObj[x].amount + "</td>";
+                            txt += "<td>" + myObj[x].date + "</td>";
+                            txt += "<td>" + myObj[x].memo + "</td></tr>";
+                        }
+                        txt += "</table>"
+                        document.getElementById("table").innerHTML = txt;
+                    }
+                };
+                xhttp.open("GET", "/controller/history", true);
+                xhttp.send();
+            }
+        </script>
     </body>
 </html>
 
