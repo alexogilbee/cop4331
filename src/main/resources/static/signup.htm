@@ -9,43 +9,30 @@
                     return false;
                 }
                 // check if uname is taken
-                var txt = "uName=" + signup.uname.value;
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        // read response
-                        if (this.responseText == 'true') {
-                            alert('Error: Username is Already Taken.');
-                            return false;
-                        } else {
-                            // if it passes both, make a new user
-                            // JSONify the form (dont think you need JSON but its better practice to?)
-                            // Stringify the JSON
-                            // Send to server to be added
-                            var user = "uName=" + signup.uname.value + "&fName=" + signup.fname.value + "&lName=" + signup.lname.value + "&pWord=" + signup.password.value;
-                            var xhttp2 = new XMLHttpRequest();
-                            xhttp2.onreadystatechange = function() {
-                                if (this.readyState == 4 && this.status == 200) {
-                                    // redirect to login
-                                    window.location.replace("login.htm");
-                                }
-                            };
-                            xhttp.open("POST", "/controller/add", false);
-                            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                            xhttp.send(user);
-                            // if return succes then redirect to login page
-                        }
-                    } // can probably get error messages here?
-                };
-                xhttp.open("POST", "/controller/taken", false);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send(txt);
+                //var txt = "uName=" + signup.uname.value + "&fName=" + signup.fname.value + "&lName=" + signup.lname.value + "&pWord=" + signup.password.value;
+                //var xhttp = new XMLHttpRequest();
+                //xhttp.onreadystatechange = function() {
+                //    if (this.readyState == 4 && this.status == 200) {
+                //        // read response
+                //        if (this.responseText == 'Nah') {
+                //            alert('Error: Username is Already Taken.');
+                //            return false;
+                //        } else {
+                //            // success and redirect
+                //            alert('login time');
+                //            document.location.href("login.htm");
+                //        }
+                //    } // can probably get error messages here?
+                //};
+                //xhttp.open("POST", "/controller/add", false);
+                //xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                //xhttp.send(txt);
             }
         </script>
     </head>
     <body>
-        <h1>Sign Up:</h1>
-        <form name="signup" action="signup.htm" onsubmit="return validateForm()"> <!--- add method="POST" --->
+        <h1>Sign Up:</h1> <!---onsubmit="return validateForm()"-->
+        <form name="signup" action="/controller/add" onsubmit="return validateForm()" method="POST"> <!--- add method="POST" --->
             <label for="uname">Username:</label><br>
             <input type="text" id="uname" name="uname" required><br>
             <label for="fname">First Name:</label><br>

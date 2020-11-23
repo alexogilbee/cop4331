@@ -1,27 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script>
-            function validate() {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        alert(this.responseText);
-                        document.getElementById("output").innerHTML = this.responseText;
-                        // send a POST
-                        // check if the username is valid, then if the password matches
-                        // if return true then allow login
-                        // else return false
-                    }
-                };
-                xhttp.open("GET", "/controller/test", false);
-                xhttp.send();
-            }
-        </script>
     </head>
-    <body onload="request()">
+    <body>
         <h1>Log In:</h1>
-        <form action="overview.htm" onsubmit="validate()"> <!--- add post --->
+        <form action="controller/login" method="POST"> <!--- add post --->
             <label for="uname">Username:</label><br>
             <input type="text" id="uname" name="uname"><br>
             <label for="password">Password:</label><br>

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Controller
@@ -30,19 +32,21 @@ public class MainController {
 
 //    @PostMapping(path="/add") questionable
     @PostMapping(path="/add")
-    public @ResponseBody String addNewUser (@RequestParam String uName,
-        @RequestParam String fName, @RequestParam String lName, @RequestParam String pWord) {
+    public @ResponseBody ModelAndView addNewUser (@RequestParam String uname,
+        @RequestParam String fname, @RequestParam String lname, @RequestParam String password) throws NoSuchAlgorithmException {
+
+        String hashedPassword = BankSecurity.hash(password);
 
         User n = new User();
-        n.setUName(uName);
-        n.setFName(fName);
-        n.setLName(lName);
-        n.setPWord(pWord);
-        List<User> l = userRepository.findByuName(uName);
+        n.setUName(uname);
+        n.setFName(fname);
+        n.setLName(lname);
+        n.setPWord(hashedPassword);
+        List<User> l = userRepository.findByuName(uname);
         if (l.isEmpty()) {
             userRepository.save(n);
 
-            List<User> l2 = userRepository.findByuName(uName);
+            List<User> l2 = userRepository.findByuName(uname);
             User n2 = l2.get(0);    // holds uID
 
             Account c = new Account();
@@ -58,10 +62,10 @@ public class MainController {
             s.setIsSavings(true);
             s.setBalance(0.00);
             accountRepository.save(s);
-            return "Saved\n";
+            return new ModelAndView("redirect:http://localhost:8080/login.htm");
             // also add checking and savings accounts
         }
-        return "Duplicate";
+        return new ModelAndView("redirect:http://localhost:8080/signup.htm");
     }
 
     // questionable
@@ -97,12 +101,32 @@ public class MainController {
         return transactionRepository.findAll();
     }
 
-    @PostMapping(path="/taken")
-    public @ResponseBody boolean isuNameTaken ( @RequestParam String uName) {
-        List<User> l = userRepository.findByuName(uName);
+    @PostMapping(path="/boof")
+    public @ResponseBody String showForm ( @RequestParam String uname, @RequestParam String fname, @RequestParam String lname,
+        @RequestParam String password, @RequestParam String confirm) {
+        
+        return ("" + uname + " " + fname + " " + lname + " " + password + " " + confirm);
+    }
+
+    @PostMapping(path="/login")
+    public @ResponseBody ModelAndView verifyLogin(@RequestParam String uname, @RequestParam String password) throws NoSuchAlgorithmException {
+        
+        String hashedPassword = BankSecurity.hash(password);
+
+        List<User> l = userRepository.findByuName(uname);
         if (l.isEmpty()) {
-            return false;
+            // user not found
+            return new ModelAndView("redirect:http://localhost:8080/login.htm");
         }
-        return true;
+        // check if passwords match
+        User n = l.get(0);
+        if (n.getPWord().equals(hashedPassword)) {
+            // send to overview
+            // (also make cookies but idk how to yet)
+            return new ModelAndView("redirect:http://localhost:8080/overview.htm");
+        } else {
+            // wrong password
+            return new ModelAndView("redirect:http://localhost:8080/login.htm");
+        }
     }
 }
