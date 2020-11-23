@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -123,7 +122,7 @@ public class MainController {
         if (n.getPWord().equals(hashedPassword)) {
             // send to overview
             // (also make cookies but idk how to yet)
-            return new ModelAndView("redirect:http://localhost:8080/overview.htm");
+            return new ModelAndView("redirect:http://localhost:8080/secure/overview.htm");
         } else {
             // wrong password
             return new ModelAndView("redirect:http://localhost:8080/login.htm");
