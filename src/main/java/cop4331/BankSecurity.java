@@ -3,6 +3,7 @@ package cop4331;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class BankSecurity {
 
@@ -23,5 +24,15 @@ public class BankSecurity {
         byte[] encodedHash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
         
         return bytesToHex(encodedHash);
-    }
+	}
+	
+	public static Account findAccount(List<Account> l, String account) {
+		for (Account a : l) {
+			if (a.getAName().equals(account)) {
+				return a;
+			}
+		}
+		// shouldn't (fingers crossed) get here
+		return null;
+	}
 }

@@ -2,16 +2,18 @@
 <html>
     <body>
         <h1>Make A Payment:</h1>
-        <form action="overview.htm">
+        <form action="/controller/payment" method="POST">
             <label for="account">Select an Account to Pay From:</label><br>
-            <input type="radio" id="checking" name="account" value="checking">
-            <label for="checking">Checking</label><br>
-            <input type="radio" id="savings" name="account" value="savings">
-            <label for="savings">Savings</label><br><br>
+            <select name="account" id="account">
+                <option value="Checking">Checking</option>
+                <option value="Savings">Savings</option>
+            </select><br>
             <label for="runame">Recipient's Username:</label><br>
             <input type="text" id="runame" name="runame"><br>
             <label for="amount">Amount:</label><br>
-            <input type="text" id="amount" name="amount"><br><br>
+            <input type="number" id="amount" name="amount"><br>
+            <label for="memo">Memo:</label>
+            <input type="text" id="memo" name="memo"><br><br>
             <input type="submit" value="Confirm Transaction">
         </form>
         <br>
