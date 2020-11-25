@@ -9,10 +9,10 @@ import javax.persistence.Id;
 public class Transaction {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer tID;
-    private Integer sID;
+    private Integer tID;    // KEY
+    private String sUName;
     private Boolean sAcctSavings;
-    private Integer rID;
+    private String rUName;
     private Boolean rAcctSavings;
     private Double amount;
     private String date;
@@ -26,12 +26,12 @@ public class Transaction {
         this.tID = tID;
     }
     
-    public Integer getSID() {
-        return sID;
+    public String getSUName() {
+        return sUName;
     }
 
-    public void setSID(Integer sID) {
-        this.sID = sID;
+    public void setSUName(String sUName) {
+        this.sUName = sUName;
     }
 
     public Boolean getsAcctSavings() {
@@ -42,12 +42,12 @@ public class Transaction {
         this.sAcctSavings = sAcctSavings;
     }
 
-    public Integer getRID() {
-        return rID;
+    public String getRUName() {
+        return rUName;
     }
 
-    public void setRID(Integer rID) {
-        this.rID = rID;
+    public void setRUName(String rUName) {
+        this.rUName = rUName;
     }
 
     public Boolean getrAcctSavings() {

@@ -57,14 +57,14 @@ public class MainController {
             User n2 = l2.get(0);    // holds uID
 
             Account c = new Account();
-            c.setUID(n2.getUID());
+            c.setUName(n2.getUName());
             c.setAName("Checking");
             c.setIsSavings(false);
             c.setBalance(100.00);   // temp, should be 0
             accountRepository.save(c);
             
             Account s = new Account();
-            s.setUID(n2.getUID());
+            s.setUName(n2.getUName());
             s.setAName("Savings");
             s.setIsSavings(true);
             s.setBalance(100.00);   // temp, should be 0
@@ -92,14 +92,14 @@ public class MainController {
         
         List<Transaction> ret = new ArrayList<>();
         // find all where senderID matches
-        List<Transaction> l1 = transactionRepository.findBysID(u.getUID());
+        List<Transaction> l1 = transactionRepository.findBysUName(u.getUName());
         for (Transaction t : l1) {
             if (t.getsAcctSavings() == isSavings) {
                 ret.add(t);
             }
         }
         // find all where recieverID matches
-        List<Transaction> l2 = transactionRepository.findByrID(u.getUID());
+        List<Transaction> l2 = transactionRepository.findByrUName(u.getUName());
         for (Transaction t : l2) {
             if (t.getrAcctSavings() == isSavings) {
                 ret.add(t);
@@ -137,7 +137,7 @@ public class MainController {
             
         } else {
             // wrong password
-            headers.add("Location", "http://localhost:8080/login.htm");
+            headers.add("Responded", "MainController");
             return new ResponseEntity<>("Invalid Password", headers, HttpStatus.UNAUTHORIZED);
         }
     }
@@ -166,7 +166,7 @@ public class MainController {
         }
         
         // check if money is available in selected account
-        List<Account> la = accountRepository.findByuID(u.getUID());
+        List<Account> la = accountRepository.findByuName(u.getUName());
         Account acc = BankSecurity.findAccount(la, account);
         if (acc.getBalance() < dAmount) {
             // not enough money
@@ -182,14 +182,14 @@ public class MainController {
             return new ResponseEntity<>("User Not Found", headers, HttpStatus.UNAUTHORIZED);
         }
         User r = lr.get(0);
-        la = accountRepository.findByuID(r.getUID());
+        la = accountRepository.findByuName(r.getUName());
         Account racc = BankSecurity.findAccount(la, raccount);
         
         // make transaction
         Transaction t = new Transaction();
-        t.setSID(u.getUID());
+        t.setSUName(u.getUName());
         t.setsAcctSavings(acc.getIsSavings());
-        t.setRID(r.getUID());
+        t.setRUName(r.getUName());
         t.setrAcctSavings(racc.getIsSavings());
         t.setAmount(dAmount);
         t.setDate(new Date().toString());
@@ -218,7 +218,7 @@ public class MainController {
         List<User> ul = userRepository.findByuName(sessionID); // subject to change
         User u = ul.get(0);
         
-        return accountRepository.findByuID(u.getUID());
+        return accountRepository.findByuName(u.getUName());
     }
     
     // questionable/bugtest
@@ -229,19 +229,6 @@ public class MainController {
     @GetMapping(path="/allacct")
     public @ResponseBody Iterable<Account> getAllAccounts() {
         return accountRepository.findAll();
-    }
-    @PostMapping(path="/tsxn")
-    public @ResponseBody String addTransaction ( @RequestParam Integer sID, @RequestParam Integer rID,
-        @RequestParam Double amount, @RequestParam String date, @RequestParam String memo) {
-    
-        Transaction n = new Transaction();
-        n.setSID(sID);
-        n.setRID(rID);
-        n.setAmount(amount);
-        n.setDate(date);
-        n.setMemo(memo);
-        transactionRepository.save(n);
-        return "Saved\n";
     }
     @GetMapping(path="/test")
     public @ResponseBody String submitSentence ( @RequestParam(value = "sentence", defaultValue = "Hello from Java!") String sentence) {

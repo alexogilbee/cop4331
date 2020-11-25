@@ -8,5 +8,5 @@ import cop4331.Account;
 // Will be auto-implemented
 public interface AccountRepository extends CrudRepository<Account, Integer> {
 
-    List<Account> findByuID(Integer uID);
+    List<Account> findByuName(String uName);
 }

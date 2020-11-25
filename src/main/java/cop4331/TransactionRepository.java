@@ -9,7 +9,7 @@ import cop4331.Transaction;
 // Will be auto-implemented
 public interface TransactionRepository extends CrudRepository<Transaction, Integer> {
 
-    List<Transaction> findBysID(Integer sID);
+    List<Transaction> findBysUName(String sUName);
 
-    List<Transaction> findByrID(Integer rID);
+    List<Transaction> findByrUName(String rUName);
 }

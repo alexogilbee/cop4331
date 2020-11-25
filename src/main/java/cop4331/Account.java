@@ -9,8 +9,8 @@ import javax.persistence.Id;
 public class Account {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer aID;
-    private Integer uID;
+    private Integer aID;    // KEY
+    private String uName;
     private String aName;
     private Boolean isSavings;
     private Double balance;
@@ -23,12 +23,12 @@ public class Account {
         this.aID = aID;
     }
 
-    public Integer getUID() {
-        return uID;
+    public String getUName() {
+        return uName;
     }
 
-    public void setUID(Integer uID) {
-        this.uID = uID;
+    public void setUName(String uName) {
+        this.uName = uName;
     }
 
     public String getAName() {

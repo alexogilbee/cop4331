@@ -9,8 +9,8 @@ import javax.persistence.Id;
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer uID;
-    private String uName;
+    private Integer uID;    // KEY
+    private String uName;   // KEY
     private String fName;
     private String lName;
     private String pWord;
