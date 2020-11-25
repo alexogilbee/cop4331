@@ -4,10 +4,9 @@
         <h1>Account Overview:</h1>
         <h2>Checking:</h2>
         <h3><div id="checking">Balance: </div></h3>
-        <p>Go to <a href="history.htm">Transaction History</a></p>
 
         <h2>Savings:</h2>
-        <h3><div id="savings">Balance: </div></h3>
+        <h3><div id="savings">Balance: </div></h3><br>
         <p>Go to <a href="history.htm">Transaction History</a></p>
 
         <form action="payment.htm">
@@ -22,8 +21,8 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         myObj = JSON.parse(this.responseText);
-                        document.getElementById("checking").innerHTML += "$" + myObj[0].balance;
-                        document.getElementById("savings").innerHTML += "$" + myObj[1].balance;
+                        document.getElementById("checking").innerHTML += "$" + myObj[0].balance.toFixed(2);
+                        document.getElementById("savings").innerHTML += "$" + myObj[1].balance.toFixed(2);
                     }
                 };
                 xhttp.open("GET", "/controller/overview", true);

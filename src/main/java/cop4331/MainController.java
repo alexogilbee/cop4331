@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -109,7 +108,7 @@ public class MainController {
         return ret;
     }
     
-    @PostMapping(path="/login2")
+    @PostMapping(path="/login")
     public ResponseEntity<String> loginTwo(@RequestParam String uname, @RequestParam String password, HttpServletResponse response) throws NoSuchAlgorithmException {
         
         String hashedPassword = BankSecurity.hash(password);
@@ -118,8 +117,7 @@ public class MainController {
         List<User> l = userRepository.findByuName(uname);
         if (l.isEmpty()) {
             // user not found
-            headers.add("Location", "http://localhost:8080/login.htm");
-            return new ResponseEntity<>("User Not Found", headers, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("<h2>Error: User Not Found</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", headers, HttpStatus.UNAUTHORIZED);
             
         }
         // check if passwords match
@@ -137,8 +135,7 @@ public class MainController {
             
         } else {
             // wrong password
-            headers.add("Responded", "MainController");
-            return new ResponseEntity<>("Invalid Password", headers, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("<h2>Error: Invalid Password</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", headers, HttpStatus.UNAUTHORIZED);
         }
     }
     
@@ -146,21 +143,30 @@ public class MainController {
     public ResponseEntity<String> performPayment(@RequestParam String account, @RequestParam String runame,
     @RequestParam String amount, @RequestParam String raccount, @RequestParam String memo, @CookieValue(value="sessionID", defaultValue="INVALID") String sessionID) {
         
-        Double dAmount = Double.parseDouble(amount);
         HttpHeaders headers = new HttpHeaders();
+        Double dAmount;
+        try {
+            dAmount = Double.parseDouble(amount);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>("<h2>Error: Amount Must Be A Valid Number</h2><p><a href='http://localhost:8080/secure/payment.htm'>Click here to go back to payment.</a></p>", headers, HttpStatus.UNAUTHORIZED);   
+        }
+        if (dAmount <= 0) {
+            return new ResponseEntity<>("<h2>Error: Amount Must Be A Valid Number</h2><p><a href='http://localhost:8080/secure/payment.htm'>Click here to go back to payment.</a></p>", headers, HttpStatus.UNAUTHORIZED);   
+        }
+        // round to two places
+        dAmount = Math.round(dAmount * 100.0) / 100.0;
+
         
         // check if cookie is valid
         if (sessionID.equals("INVALID")) {
             // say session is not valid and return
-            headers.add("Location", "http://localhost:8080/login.htm");
-            return new ResponseEntity<>("Invalid Session", headers, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("<h2>Invalid Session</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", headers, HttpStatus.UNAUTHORIZED);
         }
         List<User> l = userRepository.findByuName(sessionID); // subject to change
         User u;
         if (l.isEmpty()) {
             // idk how you got here, seems kinda sus
-            headers.add("Location", "http://localhost:8080/login.htm");
-            return new ResponseEntity<>(null, headers, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("<h2>Invalid Session</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", headers, HttpStatus.UNAUTHORIZED);
         } else {
             u = l.get(0);
         }
@@ -170,16 +176,14 @@ public class MainController {
         Account acc = BankSecurity.findAccount(la, account);
         if (acc.getBalance() < dAmount) {
             // not enough money
-            headers.add("Location", "http://localhost:8080/login.htm");
-            return new ResponseEntity<>("Not Enough Money", headers, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("<h2>Not Enough Money</h2><p><a href='http://localhost:8080/secure/payment.htm'>Click here to go back to payment.</a></p>", headers, HttpStatus.UNAUTHORIZED);
         }
         
         // check if recipient is valid
         List<User> lr = userRepository.findByuName(runame); // subject to change
         if (lr.isEmpty()) {
             // user not found
-            headers.add("Location", "http://localhost:8080/login.htm");
-            return new ResponseEntity<>("User Not Found", headers, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("<h2>User Not Found</h2><p><a href='http://localhost:8080/secure/payment.htm'>Click here to go back to payment.</a></p>", headers, HttpStatus.UNAUTHORIZED);
         }
         User r = lr.get(0);
         la = accountRepository.findByuName(r.getUName());
@@ -234,27 +238,5 @@ public class MainController {
     public @ResponseBody String submitSentence ( @RequestParam(value = "sentence", defaultValue = "Hello from Java!") String sentence) {
         TestHTTP n = new TestHTTP(sentence);
         return n.getSentence();
-    }
-    // replaced by login2
-    @PostMapping(path="/login")
-    public @ResponseBody ModelAndView verifyLogin(@RequestParam String uname, @RequestParam String password) throws NoSuchAlgorithmException {
-        
-        String hashedPassword = BankSecurity.hash(password);
-    
-        List<User> l = userRepository.findByuName(uname);
-        if (l.isEmpty()) {
-            // user not found
-            return new ModelAndView("redirect:http://localhost:8080/login.htm");
-        }
-        // check if passwords match
-        User n = l.get(0);
-        if (n.getPWord().equals(hashedPassword)) {
-            // send to overview
-            // (also make cookies but idk how to yet)
-            return new ModelAndView("redirect:http://localhost:8080/secure/overview.htm");
-        } else {
-            // wrong password
-            return new ModelAndView("redirect:http://localhost:8080/login.htm");
-        }
     }
 }

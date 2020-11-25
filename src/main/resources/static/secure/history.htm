@@ -45,10 +45,10 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         myObj = JSON.parse(this.responseText);
-                        txt += "<table id='theTable'><tr><th onclick='sortTable(3)'>Sender</th><th onclick='sortTable(3)'>Reciever</th><th onclick='sortTable(3)'>Amount</th><th onclick='sortTable(3)'>Date</th><th onclick='sortTable(4)'>Memo</th></tr>"
+                        txt += "<table id='theTable'><tr><th onclick='sortTable(0)'>Sender</th><th onclick='sortTable(1)'>Reciever</th><th onclick='sortTable(2)'>Amount</th><th onclick='sortTable(3)'>Date</th><th onclick='sortTable(4)'>Memo</th></tr>"
                         for (x in myObj) {
-                            txt += "<tr><td>" + myObj[x].sid + "</td>";
-                            txt += "<td>" + myObj[x].rid + "</td>";
+                            txt += "<tr><td>" + myObj[x].suname + "</td>";
+                            txt += "<td>" + myObj[x].runame + "</td>";
                             txt += "<td>" + myObj[x].amount + "</td>";
                             txt += "<td>" + myObj[x].date + "</td>";
                             txt += "<td>" + myObj[x].memo + "</td></tr>";
