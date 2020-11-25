@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <script src="../js/validateCookie.js"></script>
+    </head>
     <body onload="request()">
         <h1>Account Overview:</h1>
         <h2>Checking:</h2>
@@ -13,10 +16,12 @@
             <input type="submit" value="Make A Payment">
         </form>
         <br>
-        <button onclick="document.location='../login.htm'">Log Out</button>
+        <button onclick="removeCookie()">Log Out</button>
 
         <script>
             function request() {
+                var auth = validateCookie();
+
                 var myObj, xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -25,7 +30,7 @@
                         document.getElementById("savings").innerHTML += "$" + myObj[1].balance.toFixed(2);
                     }
                 };
-                xhttp.open("GET", "/controller/overview", true);
+                xhttp.open("GET", "/controller/overview", false);
                 xhttp.send();
             }
         </script>

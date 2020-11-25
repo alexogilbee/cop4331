@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-    <body>
+    <head>
+        <script src="../js/validateCookie.js"></script>
+    </head>
+    <body onload="validateCookie();">
         <h1>Make A Payment:</h1>
         <form action="/controller/payment" method="POST">
             <label for="account">Select an Account to Pay From:</label><br>
@@ -24,7 +27,7 @@
         <br>
         <button onclick="document.location='overview.htm'">Back to Account Overview</button>
         <br>
-        <button onclick="document.location='../login.htm'">Log Out</button>
+        <button onclick="removeCookie()">Log Out</button>
     </body>
 </html>
 

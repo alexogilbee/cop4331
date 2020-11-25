@@ -128,7 +128,6 @@ public class MainController {
             
             Cookie cookie = new Cookie("sessionID", uname);
             cookie.setSecure(true);
-            //cookie.setPath("/secure/");
             response.addCookie(cookie);
             
             return new ResponseEntity<String>(null, headers, HttpStatus.FOUND);
@@ -224,7 +223,32 @@ public class MainController {
         
         return accountRepository.findByuName(u.getUName());
     }
+
+    @GetMapping(path="/cookie")
+    public ResponseEntity<String> isValidCookie(@CookieValue(value="sessionID", defaultValue="INVALID") String sessionID) {
+        if (sessionID.equals("INVALID")) {
+            return new ResponseEntity<>("<h2>Invalid Session</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", null, HttpStatus.UNAUTHORIZED);
+        }
+        List<User> l = userRepository.findByuName(sessionID); // subject to change again
+        if (l.isEmpty()) {
+            return new ResponseEntity<>("<h2>Invalid Session</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", null, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(null, null, HttpStatus.OK);
+    }
     
+    @GetMapping(path="/remove")
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "http://localhost:8080/login.htm");
+
+        Cookie cookie = new Cookie("sessionID", null);
+        cookie.setMaxAge(0);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+        
+        return new ResponseEntity<String>(null, headers, HttpStatus.FOUND);
+    }
+
     // questionable/bugtest
     @GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {

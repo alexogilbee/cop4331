@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="../js/validateCookie.js"></script>
         <style>
             table {
               border-spacing: 0;
@@ -36,10 +37,12 @@
         <br>
         <button onclick="document.location='overview.htm'">Back to Account Overview</button>
         <br>
-        <button onclick="document.location='../login.htm'">Log Out</button>
+        <button onclick="removeCookie()">Log Out</button>
 
         <script>
             function request(str) {
+                var auth = validateCookie();
+
                 var myObj, txt = "";
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
