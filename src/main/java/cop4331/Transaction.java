@@ -11,7 +11,9 @@ public class Transaction {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer tID;
     private Integer sID;
+    private Boolean sAcctSavings;
     private Integer rID;
+    private Boolean rAcctSavings;
     private Double amount;
     private String date;
     private String memo;
@@ -32,12 +34,28 @@ public class Transaction {
         this.sID = sID;
     }
 
+    public Boolean getsAcctSavings() {
+        return sAcctSavings;
+    }
+
+    public void setsAcctSavings(Boolean sAcctSavings) {
+        this.sAcctSavings = sAcctSavings;
+    }
+
     public Integer getRID() {
         return rID;
     }
 
     public void setRID(Integer rID) {
         this.rID = rID;
+    }
+
+    public Boolean getrAcctSavings() {
+        return rAcctSavings;
+    }
+
+    public void setrAcctSavings(Boolean rAcctSavings) {
+        this.rAcctSavings = rAcctSavings;
     }
 
     public Double getAmount() {

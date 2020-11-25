@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,14 +60,14 @@ public class MainController {
             c.setUID(n2.getUID());
             c.setAName("Checking");
             c.setIsSavings(false);
-            c.setBalance(100.00);
+            c.setBalance(100.00);   // temp, should be 0
             accountRepository.save(c);
             
             Account s = new Account();
             s.setUID(n2.getUID());
             s.setAName("Savings");
             s.setIsSavings(true);
-            s.setBalance(100.00);
+            s.setBalance(100.00);   // temp, should be 0
             accountRepository.save(s);
             return new ModelAndView("redirect:http://localhost:8080/login.htm");
             // also add checking and savings accounts
@@ -75,24 +76,37 @@ public class MainController {
     }
     
     @GetMapping(path="/history")
-    public @ResponseBody Iterable<Transaction> getTransactionHistory(@CookieValue(value="sessionID", defaultValue="INVALID") String sessionID) {
+    public @ResponseBody Iterable<Transaction> getTransactionHistory(@CookieValue(value="sessionID", defaultValue="INVALID") String sessionID, @RequestParam String account) {
         
         if (sessionID.equals("INVALID")) {
             // invalid ID
             return null;
-        }   
+        }
+        Boolean isSavings = false;
+        if (account.equals("Savings")) {
+            isSavings = true;
+        }
         // convert sessionID to uID (subject to change)
         List<User> ul = userRepository.findByuName(sessionID); // subject to change
         User u = ul.get(0);
         
+        List<Transaction> ret = new ArrayList<>();
         // find all where senderID matches
         List<Transaction> l1 = transactionRepository.findBysID(u.getUID());
+        for (Transaction t : l1) {
+            if (t.getsAcctSavings() == isSavings) {
+                ret.add(t);
+            }
+        }
         // find all where recieverID matches
         List<Transaction> l2 = transactionRepository.findByrID(u.getUID());
-        
-        // combine and send
-        l1.addAll(l2);
-        return l1;
+        for (Transaction t : l2) {
+            if (t.getrAcctSavings() == isSavings) {
+                ret.add(t);
+            }
+        }
+
+        return ret;
     }
     
     @PostMapping(path="/login2")
@@ -168,18 +182,19 @@ public class MainController {
             return new ResponseEntity<>("User Not Found", headers, HttpStatus.UNAUTHORIZED);
         }
         User r = lr.get(0);
+        la = accountRepository.findByuID(r.getUID());
+        Account racc = BankSecurity.findAccount(la, raccount);
         
         // make transaction
         Transaction t = new Transaction();
         t.setSID(u.getUID());
+        t.setsAcctSavings(acc.getIsSavings());
         t.setRID(r.getUID());
+        t.setrAcctSavings(racc.getIsSavings());
         t.setAmount(dAmount);
         t.setDate(new Date().toString());
         t.setMemo(memo);
         transactionRepository.save(t);
-        
-        la = accountRepository.findByuID(r.getUID());
-        Account racc = BankSecurity.findAccount(la, raccount);
         
         // edit user's accounts
         acc.setBalance(acc.getBalance() - dAmount);

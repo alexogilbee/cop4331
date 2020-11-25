@@ -22,8 +22,15 @@
             }
             </style>
     </head>
-    <body onload=request()>
+    <body onload="request('Checking')">
         <h1>Transaction History:</h1>
+        <form action="">
+            <label for="account">Select an Account to View:</label><br>
+            <select name="account" id="account" onchange="request(this.value)">
+                <option value="Checking">Checking</option>
+                <option value="Savings">Savings</option>
+            </select><br><br>
+        </form>
         <div id="table"></div>
         
         <br>
@@ -32,7 +39,7 @@
         <button onclick="document.location='../login.htm'">Log Out</button>
 
         <script>
-            function request() {
+            function request(str) {
                 var myObj, txt = "";
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
@@ -50,7 +57,7 @@
                         document.getElementById("table").innerHTML = txt;
                     }
                 };
-                xhttp.open("GET", "/controller/history", true);
+                xhttp.open("GET", "/controller/history?account="+str, true);
                 xhttp.send();
             }
 
