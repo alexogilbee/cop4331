@@ -191,6 +191,20 @@ public class MainController {
         headers.add("Location", "http://localhost:8080/secure/overview.htm");
         return new ResponseEntity<String>(null, headers, HttpStatus.FOUND);
     }
+
+    @GetMapping("/overview")
+    public @ResponseBody Iterable<Account> getAccountBalances(@CookieValue(value="sessionID", defaultValue="INVALID") String sessionID) {
+        
+        if (sessionID.equals("INVALID")) {
+            // invalid ID
+            return null;
+        }   
+        // convert sessionID to uID (subject to change)
+        List<User> ul = userRepository.findByuName(sessionID); // subject to change
+        User u = ul.get(0);
+        
+        return accountRepository.findByuID(u.getUID());
+    }
     
     // questionable/bugtest
     @GetMapping(path="/all")
