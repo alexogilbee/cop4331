@@ -23,7 +23,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//@RequestMapping(path="/demo")
 @RequestMapping(path="/controller")
 public class MainController {
     @Autowired
@@ -39,7 +38,7 @@ public class MainController {
     private AccountRepository accountRepository;
 
     @PostMapping(path="/add")
-    public @ResponseBody ModelAndView addNewUser (@RequestParam String uname,
+    public @ResponseBody String addNewUser (@RequestParam String uname,
         @RequestParam String fname, @RequestParam String lname, @RequestParam String password) throws NoSuchAlgorithmException {
 
         String hashedPassword = BankSecurity.hash(password);
@@ -69,10 +68,11 @@ public class MainController {
             s.setIsSavings(true);
             s.setBalance(100.00);   // temp, should be 0
             accountRepository.save(s);
-            return new ModelAndView("redirect:http://localhost:8080/login.htm");
+            System.out.println("login success yay yippee!");
+            return "success";
             // also add checking and savings accounts
         }
-        return new ModelAndView("redirect:http://localhost:8080/signup.htm");
+        return "INVALID";
     }
     
     @GetMapping(path="/history")

@@ -9,30 +9,34 @@
                     return false;
                 }
                 // check if uname is taken
-                //var txt = "uName=" + signup.uname.value + "&fName=" + signup.fname.value + "&lName=" + signup.lname.value + "&pWord=" + signup.password.value;
-                //var xhttp = new XMLHttpRequest();
-                //xhttp.onreadystatechange = function() {
-                //    if (this.readyState == 4 && this.status == 200) {
-                //        // read response
-                //        if (this.responseText == 'Nah') {
-                //            alert('Error: Username is Already Taken.');
-                //            return false;
-                //        } else {
-                //            // success and redirect
-                //            alert('login time');
-                //            document.location.href("login.htm");
-                //        }
-                //    } // can probably get error messages here?
-                //};
-                //xhttp.open("POST", "/controller/add", false);
-                //xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                //xhttp.send(txt);
+                var txt = "uName=" + signup.uname.value + "&fName=" + signup.fname.value + "&lName=" + signup.lname.value + "&pWord=" + signup.password.value;
+                var data = new FormData();
+                data.append("uname", signup.uname.value);
+                data.append("fname", signup.fname.value);
+                data.append("lname", signup.lname.value);
+                data.append("password", signup.password.value);
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // read response
+                        if (this.responseText == 'INVALID') {
+                            alert('Error: Username is Already Taken.');
+                            return false;
+                        } else {
+                            // success and redirect
+                            window.location.href = "login.htm";
+                            alert('login time');
+                        }
+                    } // can probably get error messages here?
+                };
+                xhttp.open("POST", "/controller/add", false);
+                xhttp.send(data);
             }
         </script>
     </head>
     <body>
         <h1>Sign Up:</h1> <!---onsubmit="return validateForm()"-->
-        <form name="signup" action="/controller/add" onsubmit="return validateForm()" method="POST"> <!--- add method="POST" --->
+        <form name="signup" onsubmit="validateForm(); return false"> <!--- add method="POST" --->
             <label for="uname">Username:</label><br>
             <input type="text" id="uname" name="uname" required><br>
             <label for="fname">First Name:</label><br>
@@ -51,8 +55,6 @@
 </html>
 
 <!---todos:
-check for username, email existing
 probably want password standards
 need to ensure no extraneous characters in fields ($,%,^, etc)
-add new user to database (hash the password on server end)
 --->
