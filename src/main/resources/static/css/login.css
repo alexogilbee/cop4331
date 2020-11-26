@@ -1,0 +1,6 @@
+.form, h1, p {
+    position: relative;
+    top: 50%;
+    text-align: center;
+    color: black;
+}

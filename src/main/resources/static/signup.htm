@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/login.css">
         <script>
             function validateForm() {
                 // check if passwords match
@@ -35,25 +37,20 @@
     </head>
     <body>
         <h1>Sign Up:</h1> <!---onsubmit="return validateForm()"-->
-        <form name="signup" onsubmit="validateForm(); return false"> <!--- add method="POST" --->
+        <form name="signup" class="form" onsubmit="validateForm(); return false"> <!--- add method="POST" --->
             <label for="uname">Username:</label><br>
-            <input type="text" id="uname" name="uname" required><br>
+            <input type="text" id="uname" name="uname" required maxlength="20"><br>
             <label for="fname">First Name:</label><br>
-            <input type="text" id="fname" name="fname" required><br>
+            <input type="text" id="fname" name="fname" required maxlength="20"><br>
             <label for="lname">Last Name:</label><br>
-            <input type="text" id="lname" name="lname" required><br>
+            <input type="text" id="lname" name="lname" required maxlength="20"><br>
             <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br>
+            <input type="password" id="password" name="password" required maxlength="20"><br>
             <label for="confirm">Confirm Password:</label><br>
-            <input type="password" id="confirm" name="confirm" required><br><br>
-            <input type="submit" value="Sign Up">
+            <input type="password" id="confirm" name="confirm" required maxlength="20"><br><br>
+            <input type="submit" class="button" value="Sign Up">
         </form>
 
         <p>Already have an account? <a href="login.htm">Login</a></p>
     </body>
 </html>
-
-<!---todos:
-probably want password standards
-need to ensure no extraneous characters in fields ($,%,^, etc)
---->

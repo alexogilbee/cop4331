@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Login</title>
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/login.css">
     </head>
     <body>
         <h1>Log In:</h1>
-        <form name="login" action="controller/login" method="POST"> <!--- add post --->
+        <form name="login" class="form" action="controller/login" method="POST"> <!--- add post --->
             <label for="uname">Username:</label><br>
-            <input type="text" id="uname" name="uname"><br>
+            <input type="text" id="uname" name="uname" required maxlength="20"><br><br>
             <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password"><br><br>
-            <input type="submit" value="Log In">
+            <input type="password" id="password" name="password" required maxlength="20"><br><br>
+            <input class="button" type="submit" value="Log In">
         </form>
 
         <p id="signup">New User? <a href="signup.htm">Sign Up</a></p>
