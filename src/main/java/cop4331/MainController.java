@@ -227,10 +227,12 @@ public class MainController {
     @GetMapping(path="/cookie")
     public ResponseEntity<String> isValidCookie(@CookieValue(value="sessionID", defaultValue="INVALID") String sessionID) {
         if (sessionID.equals("INVALID")) {
+            System.out.println("INVALID");
             return new ResponseEntity<>("<h2>Invalid Session</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", null, HttpStatus.UNAUTHORIZED);
         }
         List<User> l = userRepository.findByuName(sessionID); // subject to change again
         if (l.isEmpty()) {
+            System.out.println("NOT FOUND");
             return new ResponseEntity<>("<h2>Invalid Session</h2><p><a href='http://localhost:8080/login.htm'>Click here to go back to login.</a></p>", null, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(null, null, HttpStatus.OK);
@@ -247,20 +249,5 @@ public class MainController {
         response.addCookie(cookie);
         
         return new ResponseEntity<String>(null, headers, HttpStatus.FOUND);
-    }
-
-    // questionable/bugtest
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-    @GetMapping(path="/allacct")
-    public @ResponseBody Iterable<Account> getAllAccounts() {
-        return accountRepository.findAll();
-    }
-    @GetMapping(path="/test")
-    public @ResponseBody String submitSentence ( @RequestParam(value = "sentence", defaultValue = "Hello from Java!") String sentence) {
-        TestHTTP n = new TestHTTP(sentence);
-        return n.getSentence();
     }
 }

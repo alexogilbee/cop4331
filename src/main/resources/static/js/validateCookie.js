@@ -3,7 +3,7 @@ function validateCookie() {
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 401) {
                     console.log("nah fam");
-                    window.location.href = "../login.htm";
+                    //window.location.href = "../login.htm";
                     return false;
             } else if (this.readyState == 4 && this.status == 200) {
                 console.log("youre good to go");
