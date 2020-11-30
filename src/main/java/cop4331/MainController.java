@@ -250,4 +250,9 @@ public class MainController {
         
         return new ResponseEntity<String>(null, headers, HttpStatus.FOUND);
     }
+
+    @GetMapping(path="/all")
+    public @ResponseBody Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }
